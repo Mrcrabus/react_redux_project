@@ -1,5 +1,6 @@
 import styles from './App.module.css';
 import {useDispatch, useSelector} from "react-redux";
+import {addCustomerAction, removeCustomerAction} from "./store/customerReducer";
 
 const App = () => {
     const dispatch = useDispatch()
@@ -17,9 +18,13 @@ const App = () => {
     const addCustomer = (name) => {
         const customer = {
             name,
-            id:Date.now(),
+            id: Date.now(),
         }
-      dispatch({type: 'ADD_CUSTOMER', payload: customer})
+        dispatch(addCustomerAction(customer))
+    }
+
+    const removeCustomer = (customer) => {
+        dispatch(removeCustomerAction(customer.id))
     }
 
     return (
@@ -32,12 +37,12 @@ const App = () => {
                 <input type="text"/>
                 <button onClick={() => getCash(Number(prompt()))}>Get cash</button>
                 <button onClick={() => addCustomer(prompt())}>Add customer</button>
-                <button onClick={() => getCash(Number(prompt()))}>Remove customer</button>
+                {/*<button onClick={}>Remove customer</button>*/}
 
                 {customers.length > 0 ?
                     <div>
                         {customers.map((customer, index) =>
-                            <div>
+                            <div onClick={()=> removeCustomer(customer)}>
                                 {index + 1}.{customer.name}
 
                             </div>)}
